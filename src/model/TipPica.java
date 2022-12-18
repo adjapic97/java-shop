@@ -1,0 +1,10 @@
+package model;
+
+public enum TipPica {
+	GAZIRANO,
+	NEGAZIRANO,
+	AKOHOLNO,
+	BEZAKOHOLNO,
+	HLADJENO,
+	NEHLADJENO;
+}
