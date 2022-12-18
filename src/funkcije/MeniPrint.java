@@ -26,6 +26,7 @@ public class MeniPrint {
                 scanner.next();
             }
         }
+        scanner.close();
         return option;
     }
 }
