@@ -3,6 +3,7 @@ package funkcije;
 import model.Administrator;
 import model.Korisnik;
 import model.Kupac;
+import model.Restoran;
 import model.VlasnikRestorana;
 import util.Meniji;
 
@@ -10,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.List;
 import java.util.Scanner;
 
 public class RadSaKorisnicima {
@@ -27,6 +29,42 @@ public class RadSaKorisnicima {
             System.out.println(e);
         }
         return false;
+    }
+    
+    public static Boolean vlasnikPostoji(String korisnickoIme, String idRestorana) {
+    	String line;
+    	try (BufferedReader br = new BufferedReader(new FileReader("data/restorani.csv"))) {
+			// treba da iteriramo kroz listu restoraana i vidimo li se poklapa id restorana i korisnicko ime restorana, u tom slucaju vrati true
+            while ((line = br.readLine()) != null) {
+                String[] restoran = line.split(",");
+                if (korisnickoIme.equals(restoran[4]) && idRestorana.equals(restoran[0])) {
+                    return true;
+                }
+            }
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+    	return false;
+    }
+    
+    public static VlasnikRestorana pronadjiVlasnika(String korisnickoIme) {
+    	String line;
+    	try (BufferedReader br = new BufferedReader(new FileReader("data/korisnici.csv"))) {
+			// treba da iteriramo kroz listu restoraana i vidimo li se poklapa id restorana i korisnicko ime restorana, u tom slucaju vrati true
+            while ((line = br.readLine()) != null) {
+            	String[] k = line.split(",");
+                VlasnikRestorana vlasnikRestorana = new VlasnikRestorana();
+                if (korisnickoIme.equals(k[2])) {
+                	vlasnikRestorana.setIme(k[0]);
+                	vlasnikRestorana.setPrezime(k[1]);
+                	vlasnikRestorana.setKorisnickoIme(k[2]);
+                    return vlasnikRestorana;
+                }
+            }
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+    	return null;
     }
 
 
@@ -85,7 +123,7 @@ public class RadSaKorisnicima {
         return new Kupac();
     }
 
-    public static Korisnik kreirajKorisnika() {
+	public static Korisnik kreirajKorisnika() {
         Scanner scanner = new Scanner(System.in);
         Korisnik korisnik = null;
         Boolean korisnikPostoji = true;
@@ -154,11 +192,11 @@ public class RadSaKorisnicima {
                     System.out.println("Unesite lozinku korisnika: ");
                     String lozinka = scanner.nextLine();
 
-                    String noviKorisnik = ime + "," + prezime + "," + korisnickoIme + "," + lozinka + "," + "kupac";
+                    String noviKorisnik = ime + "," + prezime + "," + korisnickoIme + "," + lozinka + "," + "vlasnik";
 
                     upisiKorisnikaUCSV(noviKorisnik);
 
-                    Korisnik noviKupac = new Kupac(ime, prezime, korisnickoIme, lozinka);
+                    Korisnik noviKupac = new VlasnikRestorana(ime, prezime, korisnickoIme, lozinka);
                     korisnik = noviKupac;
                 }
 
@@ -167,6 +205,35 @@ public class RadSaKorisnicima {
         } while (korisnikPostoji);
         return korisnik;
     }
+	
+	
+	public static VlasnikRestorana dodajVlasnikaRestorana() {
+        Scanner scanner = new Scanner(System.in);
+        VlasnikRestorana vlasnikRestorana = null;
+        Boolean vlasnikPostoji = true;
+        do {
+        	System.out.println("1.Izaberi restoran ");
+        	System.out.println("2.Kreiraj novi restoran \n");
+        	Integer opcija = scanner.nextInt();
+        	if(opcija == 1) {
+        		// isprintaj sve restorane i uzmi novi input od usera, i prebaci ga da bira korisnika
+        		// bira korisnika tako sto unese korisnicko ime, ako ne postoji reci mu da ne postoji i baci ga da kreira novog
+        		List<Restoran> restorani = RadSaRestoranima.ucitajPostojeceRestorane();
+        		for (Restoran restoran : restorani) {
+					System.out.println(restoran);
+				}
+        	} else if (opcija == 2) {
+        		
+        	}
+        	// treba da isprintamo restorane ili da kreiramo novi
+        	
+            System.out.println("Unesite korisnicko ime korisnika: ");
+            String korisnickoIme = scanner.nextLine();
+            vlasnikPostoji = false;
+            
+        } while (vlasnikPostoji);
+        return vlasnikRestorana;
+	}
 
     public static void upisiKorisnikaUCSV(String korisnik) {
         try {

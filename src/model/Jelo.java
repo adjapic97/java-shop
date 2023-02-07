@@ -21,11 +21,13 @@ public class Jelo extends Stavka {
 	public void setTipJela(TipJela tipJela) {
 		this.tipJela = tipJela;
 	}
+	
 
 	@Override
 	public String toString() {
-		return "Jelo [tipJela=" + tipJela + "]";
+		return super.toString() + " [tipJela=" + tipJela + "]";
 	}
+	
 
 	@Override
 	public int hashCode() {

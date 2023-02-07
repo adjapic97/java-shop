@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Meni implements Prikaz{
+	
+	private String id;
 	private List<Stavka> listaStavki;
 	
 	public Meni() {
@@ -23,14 +25,19 @@ public class Meni implements Prikaz{
 		this.listaStavki = listaStavki;
 	}
 
-	@Override
-	public String toString() {
-		return "Meni [listaStavki=" + listaStavki + "]";
+
+	public String getId() {
+		return id;
 	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(listaStavki);
+		return Objects.hash(id, listaStavki);
 	}
 
 	@Override
@@ -42,7 +49,13 @@ public class Meni implements Prikaz{
 		if (getClass() != obj.getClass())
 			return false;
 		Meni other = (Meni) obj;
-		return Objects.equals(listaStavki, other.listaStavki);
+		return Objects.equals(id, other.id) && Objects.equals(listaStavki, other.listaStavki);
+	}
+
+	
+	@Override
+	public String toString() {
+		return "Meni [id=" + id + ", listaStavki=" + listaStavki + "]";
 	}
 
 	@Override

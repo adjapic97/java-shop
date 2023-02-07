@@ -29,8 +29,10 @@ public class VlasnikRestorana extends Korisnik {
 
 	@Override
 	public String toString() {
-		return "VlasnikRestorana [listaRestorana=" + listaRestorana + "]";
+		return super.toString();
 	}
+	
+	
 
 	@Override
 	public int hashCode() {
